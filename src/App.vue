@@ -1,7 +1,9 @@
 <template>
   <div class="app-container">
     <Navbar @navigate="scrollToSection" />
-    <ProfileComp />
+    <section ref="profileSection" id="profile">
+      <ProfileComp />
+    </section>
     <section ref="aboutSection" id="about">
       <AboutComp />
     </section>

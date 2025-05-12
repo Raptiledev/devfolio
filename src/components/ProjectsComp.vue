@@ -3,7 +3,7 @@
         <h2 class="text-3xl font-bold text-center text-gray-800 mb-6">Projects</h2>
         <div class="project-list">
             <div v-for="project in projects" :key="project.name" class="project-card">
-                <img :src="project.icon" :alt="project.name" class="project-icon text-gray" />
+                <img :src="project.icon" :alt="project.name" class="project-icon" />
                 <h3 class="text-xl font-semibold text-gray-700">{{ project.name }}</h3>
                 <p class="text-gray-600">{{ project.description }}</p>
                 <a :href="project.githubLink" target="_blank" class="github-link">GitHub Repository</a>
@@ -18,7 +18,7 @@ const projects = [
         name: "RealTime Chat App",
         githubLink: "https://github.com/yourusername/realtime-chat-app",
         description: "A real-time chat application built with modern web technologies.",
-        icon: "/assets/chat-app-icon.png",
+        icon: "../assets/chat-app-icon.png",
     },
     {
         name: "Human Resource Management System",

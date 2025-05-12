@@ -1,22 +1,45 @@
 <template>
-    <div class="contact-comp">
-        <h2>Contact Us</h2>
-        <form @submit.prevent="handleSubmit">
-            <div class="form-group">
-                <label for="name">Name:</label>
-                <input type="text" id="name" v-model="form.name" required />
+    <h2 class="text-4xl font-medium text-center text-white-700 mb-8">Contact</h2>
+    <div class="contact-comp max-w-2xl mx-auto p-8">
+        <form @submit.prevent="handleSubmit" class="space-y-6">
+            <div class="form-group relative">
+                <input 
+                    type="text" 
+                    id="name" 
+                    v-model="form.name" 
+                    placeholder="name"
+                    class="w-full p-4 bg-[#E8E6F0] rounded-lg focus:outline-none"
+                    required 
+                />
+                <span class="text-red-500 absolute -top-1 left 2">*</span>
             </div>
             <div class="form-group">
-                <label for="email">Email:</label>
-                <input type="email" id="email" v-model="form.email" required />
+                <input 
+                    type="email" 
+                    id="email" 
+                    v-model="form.email" 
+                    placeholder="email"
+                    class="w-full p-4 bg-[#E8E6F0] rounded-lg focus:outline-none"
+                    required 
+                />
             </div>
             <div class="form-group">
-                <label for="query">Query Description:</label>
-                <textarea id="query" v-model="form.query" required></textarea>
+                <textarea 
+                    id="message" 
+                    v-model="form.query" 
+                    placeholder="message"
+                    class="w-full p-4 bg-[#E8E6F0] rounded-lg focus:outline-none min-h-[150px] resize-none"
+                    required
+                ></textarea>
             </div>
-            <button type="submit">Submit</button>
+            <button 
+                type="submit"
+                class="w-full py-3 text-center bg-white hover:bg-gray-50 rounded-lg transition-colors"
+            >
+                Send
+            </button>
         </form>
-        <p v-if="submitted">Thank you for contacting us!</p>
+        <p v-if="submitted" class="mt-4 text-green-600 text-center">Thank you for contacting us!</p>
     </div>
 </template>
 
@@ -46,39 +69,17 @@ function resetForm() {
 
 <style scoped>
 .contact-comp {
-    max-width: 400px;
-    margin: 0 auto;
-    padding: 20px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
+     background-color: #D4DE95;
+    color: #3D4127;
 }
-.form-group {
-    margin-bottom: 15px;
+
+input::placeholder,
+textarea::placeholder {
+    color: #6B7280;
 }
-label {
-    display: block;
-    margin-bottom: 5px;
-}
-input,
-textarea {
-    width: 100%;
-    padding: 8px;
-    box-sizing: border-box;
-}
-button {
-    padding: 10px 15px;
-    background-color: #636B2F;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-}
-button:hover {
-    background-color: #3D4127;
-}
-p {
-    margin-top: 15px;
-    color: green;
+
+input:focus::placeholder,
+textarea:focus::placeholder {
+    color: transparent;
 }
 </style>
