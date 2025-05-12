@@ -1,0 +1,65 @@
+@import './base.css';
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Remove global centering */
+html {
+  scroll-behavior: smooth;
+}
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #BAC095;
+  color: #3D4127;
+  font-family: Arial, sans-serif;
+}
+
+/* Center main content without affecting the navbar */
+#app {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+  font-weight: normal;
+}
+
+/* Link styles */
+a,
+.green {
+  text-decoration: none;
+  color: hsla(160, 100%, 37%, 1);
+  transition: 0.4s;
+  padding: 3px;
+}
+
+@media (hover: hover) {
+  a:hover {
+    background-color: hsla(160, 100%, 37%, 0.2);
+  }
+}
+
+/* Navbar specific styles */
+header {
+  width: 100%;
+  background-color: #636B2F;
+  padding: 1rem;
+  color: white;
+  text-align: center;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+/* Main content layout */
+main {
+  padding-top: 60px; /* Offset for the sticky navbar */
+}
+
+/* Responsive grid for content */
+@media (min-width: 1024px) {
+  #app {
+    padding: 0 2rem;
+    grid-template-columns: 1fr 1fr;
+    display: block; /* Prevent navbar from being included in the grid */
+  }
+}
