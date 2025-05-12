@@ -1,8 +1,8 @@
 <template>
   <header class="bg-primary p-4 text-light shadow-md fixed w-full top-0 z-50">
     <nav class="flex items-center justify-between max-w-6xl mx-auto">
-      <div class="text-2xl font-bold text-light">
-        MyPortfolio
+      <div  class="text-2xl font-bold text-light">
+       <a href="/">John Doe</a> 
       </div>
       <ul class="flex space-x-6">
          <li><a href="#about">About</a></li>
