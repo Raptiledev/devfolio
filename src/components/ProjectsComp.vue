@@ -1,6 +1,6 @@
 <template>
   <div class="projects">
-    <h2 class="text-3xl font-bold text-center text-gray-800 mb-6">Projects</h2>
+    <h2 class="text-3xl font-bold text-center text-white-800 mb-6">Projects</h2>
     <div class="project-list">
       <div v-for="project in projects" :key="project.name" class="project-card">
         <img :src="project.icon" :alt="project.name" class="project-icon" />
