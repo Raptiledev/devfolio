@@ -1,12 +1,12 @@
 <template>
   <section id="about" class="about-section py-12 px-6 lg:px-16">
-    <h2 class="text-4xl font-medium text-center mb-16">About Me</h2>
+    <h2 class="text-4xl font-medium text-center mb-16 slide-in">About Me</h2>
     <div class="container mx-auto grid grid-cols-1 md:grid-cols-2 gap-16">
       <!-- Education -->
-      <div class="education">
+      <div class="education slide-in">
         <h3 class="text-2xl font-medium mb-8">education</h3>
         <div class="timeline">
-          <div class="timeline-item">
+          <div class="timeline-item" v-observe-visibility="onVisibilityChange">
             <div class="timeline-marker"></div>
             <div class="timeline-content">
               <h4 class="text-xl font-medium">KFS University, Kafr Elsheikh</h4>
@@ -24,10 +24,15 @@
       </div>
 
       <!-- Experiences -->
-      <div class="experiences">
+      <div class="experiences slide-in">
         <h3 class="text-2xl font-medium mb-8">experiences</h3>
         <div class="timeline">
-          <div class="timeline-item mb-12">
+          <div
+            v-for="(_, index) in 3"
+            :key="index"
+            class="timeline-item mb-12"
+            v-observe-visibility="onVisibilityChange"
+          >
             <div class="timeline-marker"></div>
             <div class="timeline-content">
               <h4 class="text-xl font-medium">ITI, Kafr elSheikh, Egypt</h4>
@@ -78,10 +83,37 @@
   </section>
 </template>
 
+<script setup>
+import { onMounted } from 'vue'
+
+const onVisibilityChange = (isVisible, entry) => {
+  if (isVisible) {
+    entry.target.classList.add('visible')
+  }
+}
+
+onMounted(() => {
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible')
+        }
+      })
+    },
+    { threshold: 0.1 },
+  )
+
+  document.querySelectorAll('.slide-in, .timeline-item').forEach((el) => {
+    observer.observe(el)
+  })
+})
+</script>
+
 <style scoped>
 .about-section {
-  background-color: #D4DE95;
-  color: #3D4127;
+  background-color: #d4de95;
+  color: #3d4127;
 }
 
 .timeline {
@@ -91,13 +123,22 @@
 .timeline-item {
   position: relative;
   padding-left: 1.5rem;
-  border-left: 2px solid #BAC095;
+  border-left: 2px solid #bac095;
+  opacity: 0;
+  transform: translateX(50px);
+  transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: transform, opacity;
+}
+
+.timeline-item.visible {
+  opacity: 1;
+  transform: translateX(0);
 }
 
 .timeline-marker {
   width: 1rem;
   height: 1rem;
-  background-color: #BAC095;
+  background-color: #bac095;
   border-radius: 50%;
   position: absolute;
   left: -0.5rem;
@@ -117,11 +158,45 @@
 }
 
 .skill-tag {
-  background-color: #E8E6F0;
-  color: #3D4127;
+  background-color: #e8e6f0;
+  color: #3d4127;
   padding: 0.25rem 0.75rem;
   border-radius: 0.25rem;
   font-size: 0.875rem;
 }
-</style>
 
+/* Slide-in animation */
+.slide-in {
+  opacity: 0;
+  transform: translateX(-50px);
+  transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: transform, opacity;
+}
+
+.slide-in.visible {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* Improved cascade effect */
+.experiences .timeline-item:nth-child(1) {
+  transition-delay: 0.2s;
+}
+.experiences .timeline-item:nth-child(2) {
+  transition-delay: 0.4s;
+}
+.experiences .timeline-item:nth-child(3) {
+  transition-delay: 0.6s;
+}
+
+/* Add initial animation for the title and sections */
+.about-section h2 {
+  transition-delay: 0.1s;
+}
+.education {
+  transition-delay: 0.3s;
+}
+.experiences {
+  transition-delay: 0.5s;
+}
+</style>
