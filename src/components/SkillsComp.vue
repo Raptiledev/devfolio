@@ -120,6 +120,7 @@ onMounted(() => {
 .skills-section {
   background-color: #d4de95;
   color: #3d4127;
+  border-radius: 12px;
 }
 
 svg {

@@ -49,6 +49,7 @@ const projects = [
 <style scoped>
 .projects {
   padding: 20px;
+  border-radius: 12px;
 }
 
 .project-list {

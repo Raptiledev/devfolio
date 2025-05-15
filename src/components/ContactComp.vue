@@ -1,85 +1,158 @@
 <template>
-    <h2 class="text-4xl font-medium text-center text-white-700 mb-8">Contact</h2>
-    <div class="contact-comp max-w-2xl mx-auto p-8">
-        <form @submit.prevent="handleSubmit" class="space-y-6">
-            <div class="form-group relative">
-                <input 
-                    type="text" 
-                    id="name" 
-                    v-model="form.name" 
-                    placeholder="name"
-                    class="w-full p-4 bg-[#E8E6F0] rounded-lg focus:outline-none"
-                    required 
-                />
-                <span class="text-red-500 absolute -top-1 left 2">*</span>
-            </div>
-            <div class="form-group">
-                <input 
-                    type="email" 
-                    id="email" 
-                    v-model="form.email" 
-                    placeholder="email"
-                    class="w-full p-4 bg-[#E8E6F0] rounded-lg focus:outline-none"
-                    required 
-                />
-            </div>
-            <div class="form-group">
-                <textarea 
-                    id="message" 
-                    v-model="form.query" 
-                    placeholder="message"
-                    class="w-full p-4 bg-[#E8E6F0] rounded-lg focus:outline-none min-h-[150px] resize-none"
-                    required
-                ></textarea>
-            </div>
-            <button 
-                type="submit"
-                class="w-full py-3 text-center bg-white hover:bg-gray-50 rounded-lg transition-colors"
-            >
-                Send
-            </button>
-        </form>
-        <p v-if="submitted" class="mt-4 text-green-600 text-center">Thank you for contacting us!</p>
+  <section id="contact" class="py-12 px-6 lg:px-16">
+    <h2 class="text-4xl font-medium text-center mb-8">Contact</h2>
+    <div class="contact-comp max-w-2xl mx-auto p-8 rounded-lg shadow-lg">
+      <form @submit.prevent="sendEmail" class="space-y-6">
+        <div class="form-group relative">
+          <input
+            type="text"
+            id="name"
+            v-model="form.name"
+            placeholder="Your Name"
+            class="form-input"
+            :disabled="loading"
+            required
+          />
+          <span class="text-red-500 absolute -top-1 left-2">*</span>
+        </div>
+        <div class="form-group relative">
+          <input
+            type="email"
+            id="email"
+            v-model="form.email"
+            placeholder="Your Email"
+            class="form-input"
+            :disabled="loading"
+            required
+          />
+          <span class="text-red-500 absolute -top-1 left-2">*</span>
+        </div>
+        <div class="form-group relative">
+          <textarea
+            id="message"
+            v-model="form.message"
+            placeholder="Your Message"
+            class="form-input min-h-[150px] resize-none"
+            :disabled="loading"
+            required
+          ></textarea>
+          <span class="text-red-500 absolute -top-1 left-2">*</span>
+        </div>
+        <button type="submit" class="submit-btn" :disabled="loading">
+          {{ loading ? 'Sending...' : 'Send Message' }}
+        </button>
+      </form>
+      <div
+        v-if="status"
+        :class="['mt-4 text-center', status.success ? 'text-green-600' : 'text-red-600']"
+      >
+        {{ status.message }}
+      </div>
     </div>
+  </section>
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref } from 'vue'
+import emailjs from '@emailjs/browser'
 
 const form = ref({
-    name: "",
-    email: "",
-    query: "",
-});
+  name: '',
+  email: '',
+  message: '',
+})
 
-const submitted = ref(false);
+const loading = ref(false)
+const status = ref(null)
 
-function handleSubmit() {
-    console.log("Form submitted:", form.value);
-    submitted.value = true;
-    resetForm();
+async function sendEmail() {
+  loading.value = true
+  status.value = null
+
+  try {
+    await emailjs.send(
+      'YOUR_SERVICE_ID', // Add your EmailJS service ID
+      'YOUR_TEMPLATE_ID', // Add your EmailJS template ID
+      {
+        from_name: form.value.name,
+        from_email: form.value.email,
+        message: form.value.message,
+        to_email: 'your-email@gmail.com', // Add your email
+      },
+      'YOUR_PUBLIC_KEY', // Add your EmailJS public key
+    )
+
+    status.value = {
+      success: true,
+      message: 'Thank you! Your message has been sent successfully.',
+    }
+    resetForm()
+  } catch (error) {
+    status.value = {
+      success: false,
+      message: 'Oops! Something went wrong. Please try again.',
+    }
+  } finally {
+    loading.value = false
+  }
 }
 
 function resetForm() {
-    form.value.name = "";
-    form.value.email = "";
-    form.value.query = "";
+  form.value = {
+    name: '',
+    email: '',
+    message: '',
+  }
 }
 </script>
 
 <style scoped>
 .contact-comp {
-     background-color: #D4DE95;
-    color: #3D4127;
+  background-color: #d4de95;
+  color: #3d4127;
+}
+
+.form-input {
+  @apply w-full p-4 bg-[#E8E6F0] rounded-lg focus:outline-none transition-all duration-300;
+}
+
+.form-input:focus {
+  @apply ring-2 ring-[#3D4127] ring-opacity-50;
+}
+
+.form-input:disabled {
+  @apply opacity-70 cursor-not-allowed;
+}
+
+.submit-btn {
+  @apply w-full py-3 px-6 text-center bg-[#3D4127] text-[#D4DE95]
+    hover:bg-opacity-90 rounded-lg transition-all duration-300
+    disabled:opacity-70 disabled:cursor-not-allowed;
 }
 
 input::placeholder,
 textarea::placeholder {
-    color: #6B7280;
+  color: #6b7280;
 }
 
 input:focus::placeholder,
 textarea:focus::placeholder {
-    color: transparent;
+  color: transparent;
+}
+
+/* Animation for status message */
+.mt-4 {
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 </style>
